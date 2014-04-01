@@ -1,7 +1,7 @@
 require 'test/unit'
-require 'openssl-ccm'
+require 'openssl/ccm'
 
-# Testclass
+# Additional tests
 class CCMFilesTest < Test::Unit::TestCase
   KEY = %W(
     00000000000000000000000000000000

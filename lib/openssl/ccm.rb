@@ -1,7 +1,7 @@
 require 'openssl'
 
 module OpenSSL
-  # TODO
+  # CCMError used for wrong parameter resonse.
   class CCMError < StandardError
   end
 

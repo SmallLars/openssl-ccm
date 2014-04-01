@@ -1,5 +1,5 @@
 require 'test/unit'
-require 'openssl-ccm'
+require 'openssl/ccm'
 
 # Testclass with Test Vectors from
 # http://tools.ietf.org/html/rfc3610#section-8
