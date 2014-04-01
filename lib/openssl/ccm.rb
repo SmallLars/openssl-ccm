@@ -12,14 +12,14 @@ module OpenSSL
   # ciphers, such as the Advanced Encryption Standard (AES).
   #
   # At the moment there is no update function, because length of
-  # data and additional_data are needed to start of cipher process.
+  # data and additional_data are needed at the begin of cipher process.
   # In future init(nonce, data_len, additional_data_len) could
   # be a solution, to solve this problem. After init, update(data)
   # could be used to set additional_data first followed by data.
   class CCM
     # Searches for supported algorithms within OpenSSL
     #
-    # @return [Stringlist] of supported algorithms
+    # @return [[String]] supported algorithms
     def self.ciphers
       l = OpenSSL::Cipher.ciphers.keep_if { |c| c.end_with?('-128-CBC') }
       l.length.times { |i| l[i] = l[i][0..-9] }
