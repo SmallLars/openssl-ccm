@@ -1,6 +1,11 @@
 require 'test/unit'
 require 'openssl/ccm'
 
+if ENV['COVERAGE']
+  require 'coveralls'
+  Coveralls.wear!
+end
+
 # Testclass with Test Vectors from
 # http://tools.ietf.org/html/rfc3610#section-8
 class CCMTest < Test::Unit::TestCase
@@ -260,6 +265,38 @@ class CCMTest < Test::Unit::TestCase
                    [ADD_DATA[i]].pack('H*'))
       assert_equal(DATA[i], c.unpack('H*')[0].upcase,
                    "Wrong ENCRYPT in Vector #{i + 1}")
+    end
+  end
+
+  def test_aes_data
+    key = %W(
+      00000000000000000000000000000000
+      001234567890ABCDEFDCAFFEED3921EE
+      001234567890ABCDEFDCAFFEED3921EE
+      11223344AABB00000000000000000000
+    )
+    nonce = %W(
+      00000000000000000000000000
+      00112233445566778899
+      001122334455667788990000
+      00112233445566778899
+    )
+    mac_len = [16, 8, 14, 8]
+
+    assert(OpenSSL::CCM.ciphers.include?('AES'), 'Missing AES-Cipher')
+    1.upto(3) do |i|
+      open("test/data_#{i}", mode = 'r') do |i_file|
+        input = i_file.read
+        key.length.times do |j|
+          open("test/data_#{i}-#{j + 1}_e", mode = 'r') do |o_file|
+            output = o_file.read
+            ccm = OpenSSL::CCM.new('AES', [key[j]].pack('H*'), mac_len[j])
+            c = ccm.encrypt(input, [nonce[j]].pack('H*'))
+            assert_equal(output.unpack('H*'), c.unpack('H*'),
+                         "Wrong ENCRYPT in Vector #{i + 1}")
+          end
+        end
+      end
     end
   end
 end

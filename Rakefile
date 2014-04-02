@@ -18,8 +18,9 @@ end
 desc "Uninstall and clean documentation"
 task :clean do
   sh "gem uninstall openssl-ccm"
-  begin; sh "rm -R ./.yardoc";   rescue; end
-  begin; sh "rm -R ./doc";       rescue; end
+  begin; sh "rm -R ./coverage"; rescue; end
+  begin; sh "rm -R ./.yardoc";  rescue; end
+  begin; sh "rm -R ./doc";      rescue; end
 end
 
 desc "Development Dependencies"
