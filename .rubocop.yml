@@ -1,12 +1,12 @@
 
 ClassLength:
-  Max: 500
+  Max: 256
 
 MethodLength:
-  Max: 64
-
-CyclomaticComplexity:
   Max: 32
 
-BlockComments:
+CyclomaticComplexity:
+  Max: 8
+
+Documentation:
   Enabled: false

@@ -12,18 +12,20 @@ Gem::Specification.new do |s|
   s.email                 = ['SmallLars@t-online.de']
   s.summary               = 'RFC 3610 - CCM'
   s.description           = 'Ruby Gem for RFC 3610 - Counter with CBC-MAC (CCM)'
-  s.homepage              = ''
+  s.homepage              = 'https://github.com/smalllars/openssl-ccm'
   s.license               = 'MIT'
   s.post_install_message  = "Thanks for installing!"
 
   s.files      = Dir.glob('lib/openssl/*.rb') +
                  Dir.glob("lib/openssl/ccm/*.rb") + 
-                 ['Gemfile', 'Rakefile']
+                 ['Gemfile', 'Rakefile', '.rubocop.yml', '.yardopts']
   s.test_files = Dir.glob('test/test_*.rb') + Dir.glob('test/data_*')
 
+  s.add_development_dependency 'rake', '~> 10.2', '>= 10.2.2'
   s.add_development_dependency 'rdoc', '~> 4.1', '>= 4.1.1'
   s.add_development_dependency 'yard', '~> 0.8', '>= 0.8.7.3'
   s.add_development_dependency 'rubocop', '~> 0.18', '>= 0.18.1'
+  s.add_development_dependency 'coveralls', '~> 0.7', '>= 0.7.0'
 
   s.rdoc_options += ['-x', 'test/data_*']
   s.extra_rdoc_files = ['README.md', 'LICENSE']
