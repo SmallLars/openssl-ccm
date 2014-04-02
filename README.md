@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/SmallLars/openssl-ccm.png?branch=master)](https://travis-ci.org/SmallLars/openssl-ccm)
 [![Coverage Status](https://coveralls.io/repos/SmallLars/openssl-ccm/badge.png?branch=master)](https://coveralls.io/r/SmallLars/openssl-ccm)
 [![Code Climate](https://codeclimate.com/github/SmallLars/openssl-ccm.png)](https://codeclimate.com/github/SmallLars/openssl-ccm)
+[![Inline docs](http://inch-pages.github.io/github/smalllars/openssl-ccm.png)](http://inch-pages.github.io/github/smalllars/openssl-ccm)
 
 # openssl-ccm
 
