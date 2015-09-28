@@ -1,7 +1,8 @@
 source 'https://rubygems.org'
 
-gem 'rake', '>=10.2.2'
-gem 'rdoc', '>=4.1.1'
-gem 'yard', '>=0.8.7.3'
-gem 'rubocop', '>=0.18.1'
-gem 'coveralls', '>=00.7.0'
+gem 'rake', '>=10.4.2'
+gem 'rdoc', '>=4.2.0'
+gem 'yard', '>=0.8.7.6'
+gem 'rubocop', '>=0.34.2'
+gem 'test-unit', '>=3.1.4'
+gem 'coveralls', '>=0.8.2'
