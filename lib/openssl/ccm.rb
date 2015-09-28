@@ -21,7 +21,8 @@ module OpenSSL
     #
     # @return [[String]] supported algorithms
     def self.ciphers
-      l = OpenSSL::Cipher.ciphers.keep_if { |c| c.end_with?('-128-CBC') }
+      l = OpenSSL::Cipher.ciphers.keep_if { |c| c.end_with?('-128-CBC') or
+        c.end_with?('-192-CBC') or c.end_with?('-256-CBC') }
       l.length.times { |i| l[i] = l[i][0..-9] }
       l
     end
@@ -45,7 +46,15 @@ module OpenSSL
         fail CCMError, 'invalid mac length'
       end
 
-      @cipher = OpenSSL::Cipher.new("#{cipher}-128-CBC")
+      if key.length < 24
+        cipher_key_size = "128"
+      elsif key.length < 32
+        cipher_key_size = "192"
+      else
+        cipher_key_size = "256"
+      end
+
+      @cipher = OpenSSL::Cipher.new("#{cipher}-" + cipher_key_size  + "-CBC")
       @key = key
       @mac_len = mac_len
     end

@@ -296,4 +296,44 @@ class CCMTest < Test::Unit::TestCase
       end
     end
   end
+
+  #Test case from https://github.com/weidai11/cryptopp/blob/master/TestVectors/ccm.txt
+  def test_aes_data_256
+    key =  %W(
+      0000000000000000000000000000000000000000000000000000000000000000
+      fb7615b23d80891dd470980bc79584c8b2fb64ce60978f4d17fce45a49e830b7
+    )
+
+    nonce = %W(
+      000000000000000000000000
+      dbd1a3636024b7b402da7d6f
+    )
+
+    plaintext = %W(
+      00000000000000000000000000000000
+      a845348ec8c5b5f126f50e76fefd1b1e
+    )
+
+    ciphertext = %W(
+      c1944044c8e7aa95d2de9513c7f3dd8c
+      cc881261c6a7fa72b96a1739176b277f
+    )
+
+    mac = %W(
+      4b0a3e5e51f151eb0ffae7c43d010fdb
+      3472e1145f2c0cbe146349062cf0e423
+    )
+
+    assert(OpenSSL::CCM.ciphers.include?('AES'), 'Missing AES-Cipher')
+    key.length.times do |i|
+      mac_len = mac[i].length / 2
+      ccm = OpenSSL::CCM.new('AES', [key[i]].pack('H*'), mac_len)
+      c = ccm.encrypt([plaintext[i]].pack('H*'), [nonce[i]].pack('H*'))
+      c_unpack = c.unpack('H*')
+      assert_equal([mac[i]], c[-mac_len..-1].unpack('H*'),
+                         "Wrong MAC ENCRYPT in Test #{i} ")
+      assert_equal([ciphertext[i]], c[0..-mac_len - 1].unpack('H*'),
+                         "Wrong ciphertext ENCRYPT in Test #{i}")
+    end
+  end
 end
