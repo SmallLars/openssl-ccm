@@ -21,10 +21,7 @@ module OpenSSL
     #
     # @return [[String]] supported algorithms
     def self.ciphers
-      l = OpenSSL::Cipher.ciphers.keep_if { |c| c.end_with?('-128-CBC') or
-        c.end_with?('-192-CBC') or c.end_with?('-256-CBC') }
-      l.length.times { |i| l[i] = l[i][0..-9] }
-      l
+      @ciphers ||= OpenSSL::Cipher.ciphers.select { |c| c.match(/-(128|192|256)-CBC$/i) }.map { |e| e[0..-9].upcase }.uniq
     end
 
     public
@@ -38,7 +35,7 @@ module OpenSSL
     #
     # @return [Object] the new CCM object
     def initialize(cipher, key, mac_len)
-      unless CCM.ciphers.include?(cipher)
+      unless CCM.ciphers.include?(cipher.upcase)
         fail CCMError, "unsupported cipher algorithm (#{cipher})"
       end
       fail CCMError, 'invalid key length' unless key.b.length >= 16
