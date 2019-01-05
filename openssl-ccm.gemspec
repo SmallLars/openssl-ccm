@@ -21,12 +21,12 @@ Gem::Specification.new do |s|
                  ['Gemfile', 'Rakefile', '.rubocop.yml', '.yardopts']
   s.test_files = Dir.glob('test/test_*.rb') + Dir.glob('test/data_*')
 
-  s.add_development_dependency 'rake', '~> 10.4', '>= 10.4.2'
-  s.add_development_dependency 'rdoc', '~> 4.2', '>= 4.2.0'
-  s.add_development_dependency 'yard', '~> 0.8', '>= 0.8.7.6'
-  s.add_development_dependency 'rubocop', '~> 0.34', '>= 0.34.2'
-  s.add_development_dependency 'test-unit', '~> 3.1',  '>=3.1.4'
-  s.add_development_dependency 'coveralls', '~> 0.8', '>= 0.8.2'
+  s.add_development_dependency 'rake', '~> 12.3', '>= 12.3.2'
+  s.add_development_dependency 'rdoc', '~> 4.3', '>= 4.3.0'
+  s.add_development_dependency 'yard', '~> 0.9', '>= 0.9.16'
+  s.add_development_dependency 'rubocop', '~> 0.50', '>= 0.50.0'
+  s.add_development_dependency 'test-unit', '~> 3.2',  '>=3.2.9'
+  s.add_development_dependency 'coveralls', '~> 0.8', '>= 0.8.22'
 
   s.rdoc_options += ['-x', 'test/data_*']
   s.extra_rdoc_files = ['README.md', 'LICENSE']
