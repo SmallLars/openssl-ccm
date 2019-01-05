@@ -281,16 +281,19 @@ class CCMTest < Test::Unit::TestCase
     mac_len = [16, 8, 14, 8]
 
     assert(OpenSSL::CCM.ciphers.include?('AES'), 'Missing AES-Cipher')
-    1.upto(3) do |i|
-      open("test/data_#{i}", mode = 'r') do |i_file|
-        input = i_file.read
-        key.length.times do |j|
-          open("test/data_#{i}-#{j + 1}_e", mode = 'r') do |o_file|
-            output = o_file.read
-            ccm = OpenSSL::CCM.new('AES', [key[j]].pack('H*'), mac_len[j])
-            c = ccm.encrypt(input, [nonce[j]].pack('H*'))
-            assert_equal(output.unpack('H*'), c.unpack('H*'),
-                         "Wrong ENCRYPT in Vector #{i + 1}")
+
+    for cipher in ['aes', 'AES']
+      1.upto(3) do |i|
+        open("test/data_#{i}", mode = 'r') do |i_file|
+          input = i_file.read
+          key.length.times do |j|
+            open("test/data_#{i}-#{j + 1}_e", mode = 'r') do |o_file|
+              output = o_file.read
+              ccm = OpenSSL::CCM.new(cipher, [key[j]].pack('H*'), mac_len[j])
+              c = ccm.encrypt(input, [nonce[j]].pack('H*'))
+              assert_equal(output.unpack('H*'), c.unpack('H*'),
+                           "Wrong ENCRYPT in Vector #{i + 1}")
+            end
           end
         end
       end
@@ -325,15 +328,18 @@ class CCMTest < Test::Unit::TestCase
     )
 
     assert(OpenSSL::CCM.ciphers.include?('AES'), 'Missing AES-Cipher')
-    key.length.times do |i|
-      mac_len = mac[i].length / 2
-      ccm = OpenSSL::CCM.new('AES', [key[i]].pack('H*'), mac_len)
-      c = ccm.encrypt([plaintext[i]].pack('H*'), [nonce[i]].pack('H*'))
-      c_unpack = c.unpack('H*')
-      assert_equal([mac[i]], c[-mac_len..-1].unpack('H*'),
-                         "Wrong MAC ENCRYPT in Test #{i} ")
-      assert_equal([ciphertext[i]], c[0..-mac_len - 1].unpack('H*'),
-                         "Wrong ciphertext ENCRYPT in Test #{i}")
+
+    for cipher in ['aes', 'AES']
+      key.length.times do |i|
+        mac_len = mac[i].length / 2
+        ccm = OpenSSL::CCM.new(cipher, [key[i]].pack('H*'), mac_len)
+        c = ccm.encrypt([plaintext[i]].pack('H*'), [nonce[i]].pack('H*'))
+        c_unpack = c.unpack('H*')
+        assert_equal([mac[i]], c[-mac_len..-1].unpack('H*'),
+                           "Wrong MAC ENCRYPT in Test #{i} ")
+        assert_equal([ciphertext[i]], c[0..-mac_len - 1].unpack('H*'),
+                           "Wrong ciphertext ENCRYPT in Test #{i}")
+      end
     end
   end
 end
