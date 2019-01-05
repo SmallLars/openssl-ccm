@@ -51,7 +51,7 @@ module OpenSSL
         cipher_key_size = "256"
       end
 
-      @cipher = OpenSSL::Cipher.new("#{cipher}-" + cipher_key_size  + "-CBC")
+      @cipher = OpenSSL::Cipher.new("#{cipher.upcase}-" + cipher_key_size  + "-CBC")
       @key = key
       @mac_len = mac_len
     end
