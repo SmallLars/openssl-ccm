@@ -334,7 +334,6 @@ class CCMTest < Test::Unit::TestCase
         mac_len = mac[i].length / 2
         ccm = OpenSSL::CCM.new(cipher, [key[i]].pack('H*'), mac_len)
         c = ccm.encrypt([plaintext[i]].pack('H*'), [nonce[i]].pack('H*'))
-        c_unpack = c.unpack('H*')
         assert_equal([mac[i]], c[-mac_len..-1].unpack('H*'),
                            "Wrong MAC ENCRYPT in Test #{i} ")
         assert_equal([ciphertext[i]], c[0..-mac_len - 1].unpack('H*'),
