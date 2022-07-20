@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.post_install_message  = "Thanks for installing!"
 
   s.files      = Dir.glob('lib/openssl/*.rb') +
-                 Dir.glob("lib/openssl/ccm/*.rb") + 
+                 Dir.glob("lib/openssl/ccm/*.rb") +
                  ['Gemfile', 'Rakefile', '.rubocop.yml', '.yardopts']
   s.test_files = Dir.glob('test/test_*.rb') + Dir.glob('test/data_*')
 
@@ -25,8 +25,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rdoc', '~> 4.3', '>= 4.3.0'
   s.add_development_dependency 'yard', '~> 0.9', '>= 0.9.16'
   s.add_development_dependency 'rubocop', '~> 0.50', '>= 0.50.0'
-  s.add_development_dependency 'test-unit', '~> 3.2',  '>=3.2.9'
-  s.add_development_dependency 'coveralls', '~> 0.8', '>= 0.8.22'
+  s.add_development_dependency 'test-unit', '~> 3.5',  '>=3.5.3'
 
   s.rdoc_options += ['-x', 'test/data_*']
   s.extra_rdoc_files = ['README.md', 'LICENSE']
