@@ -119,6 +119,7 @@ module OpenSSL
       @cipher.reset
       @cipher.encrypt
       @cipher.key = @key
+      @cipher.iv = "\x00" * 16
 
       b_0 = Array.new(8, 0)
       b_0[0] = (additional_data.empty? ? 0 : 64) \
@@ -164,6 +165,7 @@ module OpenSSL
       @cipher.reset
       @cipher.encrypt
       @cipher.key = @key
+      @cipher.iv = "\x00" * 16
       @cipher.update(a.pack('C*'))
     end
   end
