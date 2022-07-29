@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.name                  = 'openssl-ccm'
   s.version               = OpenSSL::CCM::VERSION
   s.required_ruby_version = '>= 2.0.0'
-  s.date                  = '2019-01-08'
+  s.date                  = '2022-07-29'
   s.authors               = ['Lars Schmertmann']
   s.email                 = ['SmallLars@t-online.de']
   s.summary               = 'RFC 3610 - CCM'
