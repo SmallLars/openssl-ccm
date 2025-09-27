@@ -25,7 +25,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rdoc', '~> 4.3', '>= 4.3.0'
   s.add_development_dependency 'yard', '~> 0.9', '>= 0.9.16'
   s.add_development_dependency 'rubocop', '~> 0.50', '>= 0.50.0'
-  s.add_development_dependency 'test-unit', '~> 3.2',  '>=3.2.9'
+  s.add_development_dependency 'test-unit', '~> 3.7',  '>=3.7.0'
   s.add_development_dependency 'coveralls', '~> 0.8', '>= 0.8.22'
 
   s.rdoc_options += ['-x', 'test/data_*']

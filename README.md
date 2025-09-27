@@ -1,6 +1,5 @@
 [![Gem Version](https://badge.fury.io/rb/openssl-ccm.png)](http://badge.fury.io/rb/openssl-ccm)
 [![Dependency Status](https://gemnasium.com/SmallLars/openssl-ccm.png)](https://gemnasium.com/SmallLars/openssl-ccm)
-[![Build Status](https://travis-ci.org/SmallLars/openssl-ccm.png?branch=master)](https://travis-ci.org/SmallLars/openssl-ccm)
 [![Coverage Status](https://coveralls.io/repos/SmallLars/openssl-ccm/badge.png?branch=master)](https://coveralls.io/r/SmallLars/openssl-ccm)
 [![Code Climate](https://codeclimate.com/github/SmallLars/openssl-ccm.png)](https://codeclimate.com/github/SmallLars/openssl-ccm)
 [![Inline docs](http://inch-ci.org/github/smalllars/openssl-ccm.png)](http://inch-ci.org/github/smalllars/openssl-ccm)
