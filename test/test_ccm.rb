@@ -224,6 +224,19 @@ class CCMTest < Test::Unit::TestCase
     end
   end
 
+  def test_aes_decrypt_wrong_mac
+    ccm = OpenSSL::CCM.new('AES', 'A' * 16, 8)
+
+    nonce = ['0' * 24].pack('H*')
+    cipher = ccm.encrypt('data', nonce)
+    plain = ccm.decrypt(cipher, nonce)
+    assert_equal('data', plain)
+
+    cipher[-1] = '0'
+    plain = ccm.decrypt(cipher, ['A' * 24].pack('H*'))
+    assert_equal('', plain)
+  end
+
   def test_aes_vectors
     assert(OpenSSL::CCM.ciphers.include?('AES'), 'Missing AES-Cipher')
     KEY.length.times do |i|
@@ -300,29 +313,40 @@ class CCMTest < Test::Unit::TestCase
     end
   end
 
-  #Test case from https://github.com/weidai11/cryptopp/blob/master/TestVectors/ccm.txt
-  def test_aes_data_256
+  # Data for 192: Randomly generated
+  # Data for 256: https://github.com/weidai11/cryptopp/blob/master/TestVectors/ccm.txt
+  def test_aes_data_192_256
     key =  %W(
+      000000000000000000000000000000000000000000000000
+      b6f725277f4caf592682a10cbb05594a17edeee8229341be
       0000000000000000000000000000000000000000000000000000000000000000
       fb7615b23d80891dd470980bc79584c8b2fb64ce60978f4d17fce45a49e830b7
     )
 
     nonce = %W(
       000000000000000000000000
+      f0bbf017a4ba2c9b2b63a4db
+      000000000000000000000000
       dbd1a3636024b7b402da7d6f
     )
 
     plaintext = %W(
       00000000000000000000000000000000
+      5552f4cff5af01ea74fadf2b07c7f455
+      00000000000000000000000000000000
       a845348ec8c5b5f126f50e76fefd1b1e
     )
 
     ciphertext = %W(
+      ffdc90df094742904911aff1d1931d0b
+      c7f3d712c59029348235be4b7fae3a7a
       c1944044c8e7aa95d2de9513c7f3dd8c
       cc881261c6a7fa72b96a1739176b277f
     )
 
     mac = %W(
+      434159c5aff591145867d0684c398deb
+      1475ad2db4e5e0a5e15c66e20820574c
       4b0a3e5e51f151eb0ffae7c43d010fdb
       3472e1145f2c0cbe146349062cf0e423
     )
