@@ -106,7 +106,7 @@ module OpenSSL
     end
 
     def crypt(data, nonce)
-      result = ''
+      result = String.new
       data.bytes.each_slice(16).with_index(1) do |block, b|
         counter = get_counter(nonce, b).bytes
         block.length.times { |i| counter[i] ^= block[i] }
