@@ -44,3 +44,6 @@ jobs:
       - name: Run tests
         run: bundle exec rake test
 
+      - name: Coveralls
+        uses: coverallsapp/github-action@v2
+

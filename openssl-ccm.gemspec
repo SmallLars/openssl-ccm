@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'yard', '~> 0.9', '>= 0.9.16'
   s.add_development_dependency 'rubocop', '~> 0.50', '>= 0.50.0'
   s.add_development_dependency 'test-unit', '~> 3.7',  '>=3.7.0'
-  s.add_development_dependency 'coveralls', '~> 0.8', '>= 0.8.22'
+  s.add_development_dependency 'simplecov', '~> 0.22', '>= 0.22.0'
 
   s.rdoc_options += ['-x', 'test/data_*']
   s.extra_rdoc_files = ['README.md', 'LICENSE']
