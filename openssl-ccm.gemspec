@@ -21,10 +21,10 @@ Gem::Specification.new do |s|
                  ['Gemfile', 'Rakefile', '.rubocop.yml', '.yardopts']
   s.test_files = Dir.glob('test/test_*.rb') + Dir.glob('test/data_*')
 
-  s.add_development_dependency 'rake', '~> 12.3', '>= 12.3.2'
-  s.add_development_dependency 'rdoc', '~> 4.3', '>= 4.3.0'
-  s.add_development_dependency 'yard', '~> 0.9', '>= 0.9.16'
-  s.add_development_dependency 'rubocop', '~> 0.50', '>= 0.50.0'
+  s.add_development_dependency 'rake', '~> 13.3', '>= 13.3.0'
+  s.add_development_dependency 'rdoc', '~> 6.15', '>= 6.15.0'
+  s.add_development_dependency 'yard', '~> 0.9', '>= 0.9.37'
+  s.add_development_dependency 'rubocop', '~> 1.81', '>= 1.81.1'
   s.add_development_dependency 'test-unit', '~> 3.7',  '>=3.7.0'
   s.add_development_dependency 'simplecov', '~> 0.22', '>= 0.22.0'
 
