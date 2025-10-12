@@ -199,10 +199,14 @@ class CCMTest < Test::Unit::TestCase
   def test_aes_padding
     ccm = OpenSSL::CCM.new('AES', 'A' * 16, 8)
 
-    assert_equal(''.b           , ccm.send(:padding, '').b)
-    assert_equal("\x00".b       , ccm.send(:padding, 'A' * 15).b)
-    assert_equal(''.b           , ccm.send(:padding, 'A' * 16).b)
-    assert_equal(("\x00" * 15).b, ccm.send(:padding, 'A').b)
+    assert_equal(''.b,
+                 ccm.send(:padding, '').b)
+    assert_equal("\x00".b,
+                 ccm.send(:padding, 'A' * 15).b)
+    assert_equal(''.b,
+                 ccm.send(:padding, 'A' * 16).b)
+    assert_equal(("\x00" * 15).b,
+                 ccm.send(:padding, 'A').b)
   end
 
   def test_aes_valid
@@ -215,7 +219,7 @@ class CCMTest < Test::Unit::TestCase
     end
 
     assert_raise OpenSSL::CCMError do
-      ccm.send(:valid?, 'Hello!', 'A' *  6, '')
+      ccm.send(:valid?, 'Hello!', 'A' * 6, '')
     end
     assert(ccm.send(:valid?, '', 'A' * 7, ''))
     assert(ccm.send(:valid?, '', 'A' * 13, ''))
@@ -316,7 +320,7 @@ class CCMTest < Test::Unit::TestCase
   # Data for 192: Randomly generated
   # Data for 256: https://github.com/weidai11/cryptopp/blob/master/TestVectors/ccm.txt
   def test_aes_data_192_256
-    key =  %w[
+    key = %w[
       000000000000000000000000000000000000000000000000
       b6f725277f4caf592682a10cbb05594a17edeee8229341be
       0000000000000000000000000000000000000000000000000000000000000000

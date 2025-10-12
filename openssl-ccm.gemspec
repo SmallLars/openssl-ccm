@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.post_install_message  = 'Thanks for installing!'
 
   s.files      = Dir.glob('lib/openssl/*.rb') +
-                 Dir.glob('lib/openssl/ccm/*.rb') + 
+                 Dir.glob('lib/openssl/ccm/*.rb') +
                  ['Gemfile', 'Rakefile', '.rubocop.yml', '.yardopts']
   s.test_files = Dir.glob('test/test_*.rb') + Dir.glob('test/data_*')
 
