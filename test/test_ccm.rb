@@ -295,7 +295,7 @@ class CCMTest < Test::Unit::TestCase
 
     assert(OpenSSL::CCM.ciphers.include?('AES'), 'Missing AES-Cipher')
 
-    for cipher in ['aes', 'AES']
+    %w[aes AES].each do |cipher|
       1.upto(3) do |i|
         open("test/data_#{i}", mode = 'r') do |i_file|
           input = i_file.read
@@ -353,7 +353,7 @@ class CCMTest < Test::Unit::TestCase
 
     assert(OpenSSL::CCM.ciphers.include?('AES'), 'Missing AES-Cipher')
 
-    for cipher in ['aes', 'AES']
+   %w[aes AES].each do |cipher|
       key.length.times do |i|
         mac_len = mac[i].length / 2
         ccm = OpenSSL::CCM.new(cipher, [key[i]].pack('H*'), mac_len)
