@@ -35,13 +35,9 @@ module OpenSSL
     #
     # @return [Object] the new CCM object
     def initialize(cipher, key, mac_len)
-      unless CCM.ciphers.include?(cipher.upcase)
-        fail CCMError, "unsupported cipher algorithm (#{cipher})"
-      end
-      fail CCMError, 'invalid key length' unless key.b.length >= 16
-      unless (4..16).step(2).include?(mac_len)
-        fail CCMError, 'invalid mac length'
-      end
+      raise CCMError, "unsupported cipher algorithm (#{cipher})" unless CCM.ciphers.include?(cipher.upcase)
+      raise CCMError, 'invalid key length' unless key.b.length >= 16
+      raise CCMError, 'invalid mac length' unless (4..16).step(2).include?(mac_len)
 
       if key.length < 24
         cipher_key_size = '128'
@@ -93,15 +89,10 @@ module OpenSSL
     private
 
     def valid?(data, nonce, additional_data)
-      unless (7..13).include?(nonce.b.length)
-        fail CCMError, 'invalid nonce length'
-      end
-      unless data.b.length < 2**(8 * (15 - nonce.b.length))
-        fail CCMError, 'invalid data length'
-      end
-      unless additional_data.b.length < 2**64
-        fail CCMError, 'invalid additional_data length'
-      end
+      raise CCMError, 'invalid nonce length' unless (7..13).include?(nonce.b.length)
+      raise CCMError, 'invalid data length' unless data.b.length < 2**(8 * (15 - nonce.b.length))
+      raise CCMError, 'invalid additional_data length' unless additional_data.b.length < 2**64
+
       true
     end
 
