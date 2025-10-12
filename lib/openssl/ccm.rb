@@ -44,14 +44,14 @@ module OpenSSL
       end
 
       if key.length < 24
-        cipher_key_size = "128"
+        cipher_key_size = '128'
       elsif key.length < 32
-        cipher_key_size = "192"
+        cipher_key_size = '192'
       else
-        cipher_key_size = "256"
+        cipher_key_size = '256'
       end
 
-      @cipher = OpenSSL::Cipher.new("#{cipher.upcase}-" + cipher_key_size  + "-CBC")
+      @cipher = OpenSSL::Cipher.new("#{cipher.upcase}-#{cipher_key_size}-CBC")
       @key = key
       @mac_len = mac_len
     end
