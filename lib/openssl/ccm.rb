@@ -21,10 +21,9 @@ module OpenSSL
     #
     # @return [[String]] supported algorithms
     def self.ciphers
-      @ciphers ||= OpenSSL::Cipher.ciphers.select { |c| c.match(/-(128|192|256)-CBC$/i) }.map { |e| e[0..-9].upcase }.uniq
+      selected = OpenSSL::Cipher.ciphers.select { |c| c.match(/-(128|192|256)-CBC$/i) }
+      @ciphers ||= selected.map { |e| e[0..-9].upcase }.uniq
     end
-
-    public
 
     # Creates a new CCM object.
     #
@@ -39,13 +38,10 @@ module OpenSSL
       raise CCMError, 'invalid key length' unless key.b.length >= 16
       raise CCMError, 'invalid mac length' unless (4..16).step(2).include?(mac_len)
 
-      if key.length < 24
-        cipher_key_size = '128'
-      elsif key.length < 32
-        cipher_key_size = '192'
-      else
-        cipher_key_size = '256'
-      end
+      cipher_key_size = if key.length < 24 then '128'
+                        elsif key.length < 32 then '192'
+                        else '256' # rubocop:disable Lint/ElseLayout
+                        end
 
       @cipher = OpenSSL::Cipher.new("#{cipher.upcase}-#{cipher_key_size}-CBC")
       @key = key
@@ -83,6 +79,7 @@ module OpenSSL
       new_data = crypt(data.b[0...-@mac_len], nonce)
       new_mac = mac(new_data, nonce, additional_data)
       return new_data if new_mac == data.b[-@mac_len..-1]
+
       ''
     end
 
@@ -123,19 +120,17 @@ module OpenSSL
       unless additional_data.empty?
         len = additional_data.b.length
         d = case
-            when len < (2**16 - 2**8)
+            when len < (2**16) - (2**8)
               [len].pack('n')
             when len < 2**32
-              "\xFF\xFE" + [len].pack('N')
+              "\xFF\xFE#{[len].pack('N')}"
             else
-              "\xFF\xFF" + [len].pack('Q').reverse
-        end + additional_data
+              "\xFF\xFF#{[len].pack('Q').reverse}"
+            end + additional_data
         mac = @cipher.update(d + padding(d)).bytes[-16..-1]
       end
 
-      unless data.empty?
-        mac = @cipher.update(data + padding(data)).bytes[-16..-1]
-      end
+      !data.empty? && mac = @cipher.update(data + padding(data)).bytes[-16..-1]
 
       a0 = get_counter(nonce, 0).bytes
       16.times { |i| mac[i] ^= a0[i] }
@@ -143,7 +138,8 @@ module OpenSSL
     end
 
     def padding(data)
-      return '' if (data.b.length % 16) == 0
+      return '' if (data.b.length % 16).zero?
+
       "\x00" * (16 - (data.b.length % 16))
     end
 
