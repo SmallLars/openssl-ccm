@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module OpenSSL
   class CCM
     VERSION = '1.2.3'
