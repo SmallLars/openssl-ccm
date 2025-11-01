@@ -1,12 +1,17 @@
+AllCops:
+  NewCops: enable
+  TargetRubyVersion: 2.0
+  SuggestExtensions: false
 
-ClassLength:
-  Max: 256
+Metrics/AbcSize:
+  Max: 25
+  Exclude:
+    - 'test/test_ccm.rb'
 
-MethodLength:
-  Max: 32
+Metrics/ClassLength:
+  Exclude:
+   - 'test/test_ccm.rb'
 
-CyclomaticComplexity:
-  Max: 8
-
-Documentation:
-  Enabled: false
+Metrics/MethodLength:
+  Exclude:
+    - 'test/test_ccm.rb'
