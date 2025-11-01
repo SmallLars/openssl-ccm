@@ -109,32 +109,36 @@ module OpenSSL
       @cipher.key = @key
       @cipher.iv = "\x00" * 16
 
+      mac = init_with_b0(data, nonce, additional_data)
+      !additional_data.empty? && mac = process(additional_data)
+      !data.empty? && mac = @cipher.update(data + padding(data)).bytes[-16..-1]
+
+      a0 = get_counter(nonce, 0).bytes
+      16.times { |i| mac[i] ^= a0[i] }
+      mac[0...@mac_len].pack('C*')
+    end
+
+    def init_with_b0(data, nonce, additional_data)
       b0 = Array.new(8, 0)
       b0[0] = (additional_data.empty? ? 0 : 64) \
              + (8 * ((@mac_len - 2) / 2)) \
              + (14 - nonce.b.length)
       b0 += [data.b.length].pack('Q').reverse.bytes
       b0[1, nonce.b.length] = nonce.bytes
-      mac = @cipher.update(b0.pack('C*')).bytes
+      @cipher.update(b0.pack('C*')).bytes
+    end
 
-      unless additional_data.empty?
-        len = additional_data.b.length
-        d = case
-            when len < (2**16) - (2**8)
-              [len].pack('n')
-            when len < 2**32
-              "\xFF\xFE#{[len].pack('N')}"
-            else
-              "\xFF\xFF#{[len].pack('Q').reverse}"
-            end + additional_data
-        mac = @cipher.update(d + padding(d)).bytes[-16..-1]
-      end
-
-      !data.empty? && mac = @cipher.update(data + padding(data)).bytes[-16..-1]
-
-      a0 = get_counter(nonce, 0).bytes
-      16.times { |i| mac[i] ^= a0[i] }
-      mac[0...@mac_len].pack('C*')
+    def process(additional_data)
+      len = additional_data.b.length
+      d = case
+          when len < (2**16) - (2**8)
+            [len].pack('n')
+          when len < 2**32
+            "\xFF\xFE#{[len].pack('N')}"
+          else
+            "\xFF\xFF#{[len].pack('Q').reverse}"
+          end + additional_data
+      @cipher.update(d + padding(d)).bytes[-16..-1]
     end
 
     def padding(data)
