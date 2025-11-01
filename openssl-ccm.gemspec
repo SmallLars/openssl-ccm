@@ -1,4 +1,3 @@
-# coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'openssl/ccm/version'
@@ -23,10 +22,10 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency 'rake', '~> 13.3', '>= 13.3.0'
   s.add_development_dependency 'rdoc', '~> 6.15', '>= 6.15.0'
-  s.add_development_dependency 'yard', '~> 0.9', '>= 0.9.37'
   s.add_development_dependency 'rubocop', '~> 1.81', '>= 1.81.1'
-  s.add_development_dependency 'test-unit', '~> 3.7',  '>=3.7.0'
   s.add_development_dependency 'simplecov', '~> 0.22', '>= 0.22.0'
+  s.add_development_dependency 'test-unit', '~> 3.7',  '>=3.7.0'
+  s.add_development_dependency 'yard', '~> 0.9', '>= 0.9.37'
 
   s.rdoc_options += ['-x', 'test/data_*']
   s.extra_rdoc_files = ['README.md', 'LICENSE']
