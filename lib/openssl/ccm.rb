@@ -112,13 +112,13 @@ module OpenSSL
       @cipher.key = @key
       @cipher.iv = "\x00" * 16
 
-      b_0 = Array.new(8, 0)
-      b_0[0] = (additional_data.empty? ? 0 : 64) \
+      b0 = Array.new(8, 0)
+      b0[0] = (additional_data.empty? ? 0 : 64) \
              + (8 * ((@mac_len - 2) / 2)) \
              + (14 - nonce.b.length)
-      b_0 += [data.b.length].pack('Q').reverse.bytes
-      b_0[1, nonce.b.length] = nonce.bytes
-      mac = @cipher.update(b_0.pack('C*')).bytes
+      b0 += [data.b.length].pack('Q').reverse.bytes
+      b0[1, nonce.b.length] = nonce.bytes
+      mac = @cipher.update(b0.pack('C*')).bytes
 
       unless additional_data.empty?
         len = additional_data.b.length
@@ -137,8 +137,8 @@ module OpenSSL
         mac = @cipher.update(data + padding(data)).bytes[-16..-1]
       end
 
-      a_0 = get_counter(nonce, 0).bytes
-      16.times { |i| mac[i] ^= a_0[i] }
+      a0 = get_counter(nonce, 0).bytes
+      16.times { |i| mac[i] ^= a0[i] }
       mac[0...@mac_len].pack('C*')
     end
 

@@ -282,7 +282,7 @@ class CCMTest < Test::Unit::TestCase
     end
   end
 
-  def test_aes_data
+  def test_data_aes128
     key = %w[
       00000000000000000000000000000000
       001234567890ABCDEFDCAFFEED3921EE
@@ -319,7 +319,7 @@ class CCMTest < Test::Unit::TestCase
 
   # Data for 192: Randomly generated
   # Data for 256: https://github.com/weidai11/cryptopp/blob/master/TestVectors/ccm.txt
-  def test_aes_data_192_256
+  def test_data_aes192_aes256
     key = %w[
       000000000000000000000000000000000000000000000000
       b6f725277f4caf592682a10cbb05594a17edeee8229341be
