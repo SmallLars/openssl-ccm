@@ -6,8 +6,8 @@ require 'openssl/ccm'
 # Testclass with Test Vectors from
 # http://tools.ietf.org/html/rfc3610#section-8
 class CCMTest < Test::Unit::TestCase
-  KEY = %w[C0C1C2C3C4C5C6C7C8C9CACBCCCDCECF] * 12 \
-      + %w[D7828D13B2B0BDC325A76236DF93CC6B] * 12
+  KEY = (%w[C0C1C2C3C4C5C6C7C8C9CACBCCCDCECF] * 12) \
+      + (%w[D7828D13B2B0BDC325A76236DF93CC6B] * 12)
   NONCE = %w[
     00000003020100A0A1A2A3A4A5
     00000004030201A0A1A2A3A4A5
@@ -60,10 +60,10 @@ class CCMTest < Test::Unit::TestCase
     E2FCFBB880442C731BF95167C8FFD7895E337076
     ABF21C0B02FEB88F856DF4A37381BCE3CC128517D4
   ]
-  ADD_DATA = %w[0001020304050607] * 3 \
-           + %w[000102030405060708090A0B] * 3 \
-           + %w[0001020304050607] * 3 \
-           + %w[000102030405060708090A0B] * 3 \
+  ADD_DATA = (%w[0001020304050607] * 3) \
+           + (%w[000102030405060708090A0B] * 3) \
+           + (%w[0001020304050607] * 3) \
+           + (%w[000102030405060708090A0B] * 3) \
            + %w[
              0BE1A88BACE018B1
              63018F76DC8A1BCB
@@ -77,7 +77,7 @@ class CCMTest < Test::Unit::TestCase
              EC46BB63B02520C33C49FD70
              47A65AC78B3D594227E85E71
              6E37A6EF546D955D34AB6059
-             ]
+           ]
   CTR0001 = %w[
     50859D916DCB6DDDE077C2D1D4EC9F97
     7AC0103DED38F6C0390DBA871C4991F4
@@ -213,9 +213,9 @@ class CCMTest < Test::Unit::TestCase
     ccm = OpenSSL::CCM.new('AES', 'A' * 16, 8)
 
     assert(ccm.send(:valid?, '', 'A' * 13, ''))
-    assert(ccm.send(:valid?, 'A' * (256**2 - 1), 'A' * 13, ''))
+    assert(ccm.send(:valid?, 'A' * ((256**2) - 1), 'A' * 13, ''))
     assert_raise(OpenSSL::CCMError) do
-      ccm.send(:valid?, 'A' * 256**2, 'A' * 13, '')
+      ccm.send(:valid?, 'A' * (256**2), 'A' * 13, '')
     end
 
     assert_raise OpenSSL::CCMError do
@@ -244,41 +244,25 @@ class CCMTest < Test::Unit::TestCase
   def test_aes_vectors
     assert(OpenSSL::CCM.ciphers.include?('AES'), 'Missing AES-Cipher')
     KEY.length.times do |i|
-      ccm = OpenSSL::CCM.new('AES', [KEY[i]].pack('H*'),
-                             [MAC[i]].pack('H*').b.length)
+      ccm = OpenSSL::CCM.new('AES', [KEY[i]].pack('H*'), [MAC[i]].pack('H*').b.length)
 
       c = ccm.send(:get_counter, [NONCE[i]].pack('H*'), 1)
-      assert_equal(CTR0001[i], c.unpack('H*')[0].upcase,
-                   "Wrong CTR0001 in Vector #{i + 1}")
+      assert_equal(CTR0001[i], c.unpack('H*')[0].upcase, "Wrong CTR0001 in Vector #{i + 1}")
 
       c = ccm.send(:get_counter, [NONCE[i]].pack('H*'), 2)
-      assert_equal(CTR0002[i], c.unpack('H*')[0].upcase,
-                   "Wrong CTR0002 in Vector #{i + 1}")
+      assert_equal(CTR0002[i], c.unpack('H*')[0].upcase, "Wrong CTR0002 in Vector #{i + 1}")
 
       c = ccm.send(:crypt, [DATA[i]].pack('H*'), [NONCE[i]].pack('H*'))
-      assert_equal(CIPHER[i], c.unpack('H*')[0].upcase,
-                   "Wrong CIPHER in Vector #{i + 1}")
+      assert_equal(CIPHER[i], c.unpack('H*')[0].upcase, "Wrong CIPHER in Vector #{i + 1}")
 
-      c = ccm.send(:mac,
-                   [DATA[i]].pack('H*'),
-                   [NONCE[i]].pack('H*'),
-                   [ADD_DATA[i]].pack('H*'))
-      assert_equal(MAC[i], c.unpack('H*')[0].upcase,
-                   "Wrong MAC in Vector #{i + 1}")
+      c = ccm.send(:mac, [DATA[i]].pack('H*'), [NONCE[i]].pack('H*'), [ADD_DATA[i]].pack('H*'))
+      assert_equal(MAC[i], c.unpack('H*')[0].upcase, "Wrong MAC in Vector #{i + 1}")
 
-      c = ccm.send(:encrypt,
-                   [DATA[i]].pack('H*'),
-                   [NONCE[i]].pack('H*'),
-                   [ADD_DATA[i]].pack('H*'))
-      assert_equal((CIPHER[i] + MAC[i]), c.unpack('H*')[0].upcase,
-                   "Wrong ENCRYPT in Vector #{i + 1}")
+      c = ccm.send(:encrypt, [DATA[i]].pack('H*'), [NONCE[i]].pack('H*'), [ADD_DATA[i]].pack('H*'))
+      assert_equal(CIPHER[i] + MAC[i], c.unpack('H*')[0].upcase, "Wrong ENCRYPT in Vector #{i + 1}")
 
-      c = ccm.send(:decrypt,
-                   [CIPHER[i] + MAC[i]].pack('H*'),
-                   [NONCE[i]].pack('H*'),
-                   [ADD_DATA[i]].pack('H*'))
-      assert_equal(DATA[i], c.unpack('H*')[0].upcase,
-                   "Wrong ENCRYPT in Vector #{i + 1}")
+      c = ccm.send(:decrypt, [CIPHER[i] + MAC[i]].pack('H*'), [NONCE[i]].pack('H*'), [ADD_DATA[i]].pack('H*'))
+      assert_equal(DATA[i], c.unpack('H*')[0].upcase, "Wrong ENCRYPT in Vector #{i + 1}")
     end
   end
 
@@ -357,15 +341,15 @@ class CCMTest < Test::Unit::TestCase
 
     assert(OpenSSL::CCM.ciphers.include?('AES'), 'Missing AES-Cipher')
 
-   %w[aes AES].each do |cipher|
+    %w[aes AES].each do |cipher|
       key.length.times do |i|
         mac_len = mac[i].length / 2
         ccm = OpenSSL::CCM.new(cipher, [key[i]].pack('H*'), mac_len)
         c = ccm.encrypt([plaintext[i]].pack('H*'), [nonce[i]].pack('H*'))
         assert_equal([mac[i]], c[-mac_len..-1].unpack('H*'),
-                           "Wrong MAC ENCRYPT in Test #{i} ")
-        assert_equal([ciphertext[i]], c[0..-mac_len - 1].unpack('H*'),
-                           "Wrong ciphertext ENCRYPT in Test #{i}")
+                     "Wrong MAC ENCRYPT in Test #{i} ")
+        assert_equal([ciphertext[i]], c[0..(-mac_len - 1)].unpack('H*'),
+                     "Wrong ciphertext ENCRYPT in Test #{i}")
       end
     end
   end
