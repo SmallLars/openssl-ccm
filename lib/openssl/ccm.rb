@@ -2,6 +2,10 @@
 
 require 'openssl'
 
+# Extends Ruby's standard OpenSSL module with the CCM (Counter with CBC-MAC) class.
+#
+# This module is part of Ruby's standard library and is only reopened here
+# to provide support for the CCM authenticated encryption mode (as defined in RFC 3610).
 module OpenSSL
   # CCMError used for wrong parameter resonse.
   class CCMError < StandardError

@@ -1,4 +1,5 @@
 --no-private
 --protected
-lib/**/**/*.rb -
+lib/openssl/ccm.rb -
+README.md
 LICENSE

@@ -19,5 +19,8 @@ Gem::Specification.new do |s|
 
   s.rdoc_options += ['-x', 'test/data_*']
   s.extra_rdoc_files = ['README.md', 'LICENSE']
-  s.metadata['rubygems_mfa_required'] = 'true'
+  s.metadata = {
+    'rubygems_mfa_required' => 'true',
+    'source_code_uri' => 'https://github.com/smalllars/openssl-ccm'
+  }
 end
