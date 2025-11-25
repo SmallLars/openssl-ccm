@@ -1,9 +1,9 @@
 require './lib/openssl/ccm/version'
-require 'bundler/gem_tasks'
 require 'rake/testtask'
 require 'rake/clean'
+require 'rubocop/rake_task'
 
-task default: :build
+task default: %i[rubocop test doc]
 
 desc 'Run tests'
 Rake::TestTask.new do |t|
@@ -20,18 +20,6 @@ end
 CLEAN.include('coverage')
 CLEAN.include('doc')
 CLEAN.include('.yardoc')
+CLEAN.include("openssl-ccm-#{OpenSSL::CCM::VERSION}.gem")
 
-desc 'Uninstall and clean documentation'
-task :clean do
-  sh 'gem uninstall openssl-ccm'
-end
-
-desc 'Development Dependencies'
-task :devinst do
-  sh "gem install --dev ./openssl-ccm-#{OpenSSL::CCM::VERSION}.gem"
-end
-
-desc 'Bundle install'
-task :bundle do
-  sh 'bundle install'
-end
+RuboCop::RakeTask.new
