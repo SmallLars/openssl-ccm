@@ -14,6 +14,8 @@ Gem::Specification.new do |s|
   s.license               = 'MIT'
   s.post_install_message  = 'Thanks for installing!'
 
+  s.add_dependency 'openssl', '~> 3.0'
+
   s.files = Dir.glob('lib/**/*.rb') +
             %w[LICENSE README.md]
 
