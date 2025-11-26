@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
   s.extra_rdoc_files = ['README.md', 'LICENSE']
   s.metadata = {
     'rubygems_mfa_required' => 'true',
-    'source_code_uri' => 'https://github.com/smalllars/openssl-ccm'
+    'source_code_uri' => 'https://github.com/smalllars/openssl-ccm',
+    'documentation_uri' => "https://www.rubydoc.info/gems/openssl-ccm/#{OpenSSL::CCM::VERSION}"
   }
 end

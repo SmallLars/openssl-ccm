@@ -55,6 +55,7 @@ jobs:
       - name: Build Install Uninstall
         run: |
           bundle install
+          export SOURCE_DATE_EPOCH=$(date +%s)
           gem build -V ./openssl-ccm.gemspec
           gem install ./openssl-ccm-*.gem
           gem uninstall openssl-ccm
